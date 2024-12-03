@@ -25,7 +25,7 @@ const ExpenseForm = ({ addExpense }) => {
         <div>
             <form onSubmit={submit}>
                 <fieldset style={{display: 'inline-block'}}>
-                    <legend><h2>Add Expense</h2></legend>
+                    <legend style={{textAlign: 'center'}}><h2>Add Expense</h2></legend>
                     <input
                         type='date'
                         value={date}
