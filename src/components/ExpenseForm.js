@@ -8,7 +8,7 @@ const ExpenseForm = ({ addExpense }) => {
 
     const submit = (e) => {
         e.preventDefault();
-        if (!date || !title || !amount || !category) {
+        if (!date || !title || !amount || !category || category == '분류') {
             alert('모든 필드를 입력하세요.');
             return;
         }
@@ -46,12 +46,22 @@ const ExpenseForm = ({ addExpense }) => {
                         placeholder='금액' 
                     />
                     <br/>
-                    <input 
+                    <select
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}>
+                            <option value="분류">분류</option>
+                            <option value="식비">식비</option>
+                            <option value="통신비">통신비</option>
+                            <option value="의료비">의료비</option>
+                            <option value="취미생활">취미생활</option>
+                            <option value="보험료">보험료</option>
+                    </select>
+                    {/* <input 
                         type='text' 
                         value={category} 
                         onChange={(e) => setCategory(e.target.value)} 
                         placeholder='분류' 
-                    />
+                    /> */}
                     &emsp;
                     <button type='submit' style={{ fontSize: 15 }}>
                         Add Expense
