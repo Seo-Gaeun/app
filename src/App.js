@@ -2,40 +2,34 @@ import React, { useState } from 'react';
 // import ExpenseList from './components/ExpenseList';  // MonthFilter.js에 다 포함돼서 ExpenseList.js 별도 필요 없음
 import ExpenseForm from './components/ExpenseForm';
 import MonthFilter from './components/MonthFilter';  //test
+import TotalFilter from './components/TotalFilter';  //test
 
 function App() {
   const [expenses, setExpenses] = useState([]);
-  const [total, setTotal] = useState(0);
   const [selectMonth, setSelectMonth] = useState(''); //test
+  const [selectCategory, setSelectCategory] = useState(''); //test
 
   const addExpense = (newExpense) => {
     setExpenses((prevExpenses) => [...prevExpenses, { ...newExpense, id: Date.now() }]);
-    setTotal((prevTotal) => prevTotal + newExpense.amount);
   };
 
   const deleteExpense = (id) => {
-    const deleteamount = expenses.find(expense => expense.id === id);
     setExpenses((prevExpenses) => prevExpenses.filter(expense => expense.id !== id));
-    setTotal((prevTotal) => prevTotal - deleteamount.amount);
   };
 
-  //GPT
-  const monthChange = (event) =>{         //36번째 줄의 onChange={monthChange}
-    setSelectMonth(event.target.value);   //select의 값이 바뀔 때마다 monthChange 실행
-  };                                      //event.target.value는 select의 value 값을 selectMonth에 저장
 
   return (
     <div>
       <h1 style={{ textAlign: 'center' }}>지출 장부 프로그램</h1>
-      
+
       <table border="1" style={{borderCollapse: 'collapse', width: '100%'}}>
 
         <caption><h2>Expense List</h2></caption>
 
         <thead style={{background: 'lightgray'}}>
           <th  style={{width: '10%'}}>
-            날짜 &nbsp;
-            <select id='month_select' value={selectMonth} onChange={monthChange}>
+            날짜<br/>
+            <select id='month_select' value={selectMonth} onChange={(e) => setSelectMonth(e.target.value)}>
               <option value=''>전체</option>
               <option value='1'>1월</option>
               <option value='2'>2월</option>
@@ -50,15 +44,24 @@ function App() {
               <option value='11'>11월</option>
               <option value='12'>12월</option>
             </select>  
-          </th><th>사용처</th><th style={{width: '20%'}}>금액</th><th style={{width: '5%'}}>삭제</th>
+          </th><th style={{width: '10%'}}>분류<br/>
+            <select id='category_select' value={selectCategory} onChange={(e) => setSelectCategory(e.target.value)}>
+              <option value="">전체</option>
+              <option value="식비">식비</option>
+              <option value="통신비">통신비</option>
+              <option value="의료비">의료비</option>
+              <option value="취미생활">취미생활</option>
+              <option value="보험료">보험료</option>
+            </select>
+            </th><th>사용처</th><th style={{width: '20%'}}>금액</th><th style={{width: '5%'}}>삭제</th>
         </thead>
-
+        
         <tbody>
-          <MonthFilter expenses={expenses} selectMonth={selectMonth} deleteExpense={deleteExpense} />
+          <MonthFilter expenses={expenses} selectMonth={selectMonth} selectCategory={selectCategory} deleteExpense={deleteExpense} />
         </tbody>
 
         <tfoot style={{background: 'lightgray'}}>
-          <tr><th></th><th>Total</th><th>$ {total}</th><th></th></tr>
+          <tr><th></th><th></th><th>Total</th><th>$ <TotalFilter expenses={expenses} selectMonth={selectMonth} selectCategory={selectCategory}/></th><th></th></tr>
         </tfoot>
 
       </table>
